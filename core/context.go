@@ -4,6 +4,8 @@ import (
 	"sync"
 	"github.com/gin-gonic/gin"
 	"colorme.vn/core/registry"
+	"github.com/gin-contrib/cors"
+	"time"
 )
 
 type Context struct {
@@ -22,10 +24,19 @@ func GetContext() *Context {
 }
 
 func NewContext() *Context {
+	server := gin.Default()
+	server.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+		//AllowOrigins:     []string{""},
+		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Access-Control-Allow-Headers", "Authorization", "X-Requested-With"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 	context := &Context{
-		Server:          gin.Default(),
+		Server:          server,
 		RegistryManager: registry.NewRegistryManager(),
-
 	}
 	return context
 }

@@ -36,7 +36,7 @@ var RootQuery = graphql.NewObject(
 					return nil, nil
 				},
 			},
-			"list": &graphql.Field{
+			"bases": &graphql.Field{
 				Type:        graphql.NewList(gqltype.BaseType),
 				Description: "Get bases list",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
