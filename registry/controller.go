@@ -1,12 +1,8 @@
 package registry
 
-import (
-	"nimbus/controller"
-)
-
 func GetControllerRegistry() map[string]interface{} {
 	controllerMap := map[string]interface{}{
-		"UserController": controller.UserControler{},
+		//"UserController": controller.UserControler{},
 	}
 
 	return controllerMap

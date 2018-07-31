@@ -5,8 +5,8 @@ import (
 	"github.com/jinzhu/gorm"
 	"fmt"
 	"log"
-	"nimbus/core"
-	"nimbus/core/config"
+	"colorme.vn/core"
+	"colorme.vn/core/config"
 )
 
 // import _ "github.com/jinzhu/gorm/dialects/postgres"

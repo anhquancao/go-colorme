@@ -1,10 +1,10 @@
 package app
 
 import (
-	"nimbus/registry"
-	userRouter "nimbus/router"
-	"nimbus/core"
-	"nimbus/core/service"
+	"colorme.vn/core"
+	"colorme.vn/core/service"
+	"colorme.vn/registry"
+	"colorme.vn/router"
 )
 
 type App struct {
@@ -22,7 +22,8 @@ func NewApp() *App {
 
 func (app *App) Init() {
 	app.context.RegistryManager.RegisterControllerRegistry(registry.GetControllerRegistry())
-	userRouter.RegisterRoutes(app.service.Router)
+	router.RegisterBaseRouter(app.context)
+
 }
 
 func (app *App) Run() {

@@ -3,7 +3,7 @@ package core
 import (
 	"sync"
 	"github.com/gin-gonic/gin"
-	"nimbus/core/registry"
+	"colorme.vn/core/registry"
 )
 
 type Context struct {

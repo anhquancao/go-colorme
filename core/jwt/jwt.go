@@ -2,7 +2,7 @@ package jwt
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"nimbus/core/config"
+	"colorme.vn/core/config"
 	"fmt"
 )
 
