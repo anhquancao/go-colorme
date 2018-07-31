@@ -22,7 +22,7 @@ func NewApp() *App {
 
 func (app *App) Init() {
 	app.context.RegistryManager.RegisterControllerRegistry(registry.GetControllerRegistry())
-	router.RegisterBaseRouter(app.context)
+	router.RegisterGraphQLRouter(app.context)
 
 }
 
