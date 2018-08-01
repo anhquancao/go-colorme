@@ -5,6 +5,7 @@ import (
 	"colorme.vn/core/service"
 	"colorme.vn/registry"
 	"colorme.vn/router"
+	"github.com/gin-gonic/gin"
 )
 
 type App struct {
@@ -20,9 +21,20 @@ func NewApp() *App {
 	return app
 }
 
+func setupGraphQLUI(server *gin.Engine) {
+	server.Static("/graphqlui", "./public/graphqlui")
+	server.Static("/static", "./public/graphqlui/static")
+}
+
 func (app *App) Init() {
 	app.context.RegistryManager.RegisterControllerRegistry(registry.GetControllerRegistry())
 	router.RegisterGraphQLRouter(app.context)
+	server := core.GetContext().Server
+
+	server.Static("/assets", "./public/assets")
+
+	setupGraphQLUI(server)
+	//server.LoadHTMLGlob("views/*")
 
 }
 

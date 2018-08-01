@@ -7,7 +7,7 @@ var BaseType = graphql.NewObject(
 		Name: "Base",
 		Fields: graphql.Fields{
 			"id": &graphql.Field{
-				Type:graphql.Int,
+				Type: graphql.Int,
 			},
 			"name": &graphql.Field{
 				Type: graphql.String,
@@ -18,6 +18,3 @@ var BaseType = graphql.NewObject(
 		},
 	},
 )
-
-
-
