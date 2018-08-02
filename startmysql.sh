@@ -1,5 +1,5 @@
-#!/bin/bash
+#!/bin/sh
 
-port=$1
-echo "bind to $port"
-docker run -p $port:3306  --name local-mysql -e MYSQL_ROOT_PASSWORD=secret -d mysql:5.7.22
+PORT=33060
+echo "bind to $PORT"
+docker run -p $PORT:3306  --name local-mysql -e MYSQL_ROOT_PASSWORD=secret -d mysql:5.7.22

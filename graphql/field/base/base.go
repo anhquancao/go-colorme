@@ -14,6 +14,10 @@ var FieldBase = &graphql.Field{
 		"id": &graphql.ArgumentConfig{
 			Type: graphql.Int,
 		},
+		"gen_id": &graphql.ArgumentConfig{
+			Type:        graphql.Int,
+			Description: "Get info base by gen id",
+		},
 	},
 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 		db := service.GetService().DB.DB
@@ -24,6 +28,8 @@ var FieldBase = &graphql.Field{
 		if ok {
 			db.Find(&base, id)
 		}
+
+		base.Args = p.Args
 		return base, nil
 	},
 }
@@ -31,10 +37,21 @@ var FieldBase = &graphql.Field{
 var FieldBases = &graphql.Field{
 	Type:        graphql.NewList(gqltype.BaseType),
 	Description: "Get bases list",
+	Args: graphql.FieldConfigArgument{
+		"gen_id": &graphql.ArgumentConfig{
+			Type:        graphql.Int,
+			Description: "Get info base by gen id",
+		},
+	},
 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 		var bases []model.Base
 		db := service.GetService().DB.DB
 		db.Order("created_at asc").Find(&bases)
+
+		for _, base := range bases {
+			base.Args = p.Args
+		}
+
 		return bases, nil
 	},
 }
