@@ -20,6 +20,7 @@
 vendor/*/
 /Godeps/
 log/**/*
+build/**/*
 gin-bin
 .idea/**/*
 
