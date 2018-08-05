@@ -28,3 +28,4 @@ gin-bin
 # End of https://www.gitignore.io/api/go
 
 .env
+.DS_Store
