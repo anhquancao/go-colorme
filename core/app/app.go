@@ -40,5 +40,5 @@ func (app *App) Init() {
 
 func (app *App) Run() {
 	server := app.context.Server
-	server.Run("127.0.0.1:8080")
+	server.Run(":8080")
 }

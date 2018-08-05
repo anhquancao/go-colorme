@@ -6,7 +6,6 @@ import "colorme.vn/core/model"
 type Base struct {
 	model.Model
 	ID      uint   `json:"id" gorm:"primary_key"`
-	ClassID uint   `json:"class_id"`
 	Name    string `json:"name"`
 	Address string `json:"address"`
 

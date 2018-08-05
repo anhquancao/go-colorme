@@ -14,6 +14,8 @@ type Gen struct {
 	Status string `json:"status"`
 	StartTime time.Time `json:"start_time"`
 	EndTime time.Time `json:"end_time"`
+
+	Classes []Class `gorm:"foreignkey:GenID"`
 }
 
 func (b Gen) TableName() string {

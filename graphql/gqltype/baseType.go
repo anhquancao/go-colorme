@@ -4,7 +4,7 @@ import (
 	"github.com/graphql-go/graphql"
 	"colorme.vn/model"
 	"colorme.vn/core/service"
-		"github.com/ahl5esoft/golang-underscore"
+	"github.com/ahl5esoft/golang-underscore"
 )
 
 var BaseType = graphql.NewObject(
@@ -35,10 +35,9 @@ var BaseType = graphql.NewObject(
 
 					db := service.GetService().DB.DB
 
-
 					var gen model.Gen
 
-					db.Model(&base).Related(&base.Classes, "base_id")
+					db.Model(&base).Related(&base.Classes)
 
 					classesID := underscore.Pluck(base.Classes, "id").([]uint)
 
@@ -46,11 +45,35 @@ var BaseType = graphql.NewObject(
 
 					db.Table("registers").
 						Select("sum(money) as money").
-						Where("? < paid_time AND paid_time < ?", gen.StartTime, gen.EndTime).
+						Where("? <= paid_time AND paid_time <= ?", gen.StartTime, gen.EndTime).
 						Scopes(model.RegisterByClassesID(classesID)).
 						Scopes(model.PaidMoney).Scan(&base)
 
 					return base.Money, nil
+				},
+			},
+			"target_revenue": &graphql.Field{
+				Type:        graphql.Int,
+				Description: "Total target revenue of base",
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+					base := p.Source.(model.Base)
+
+					args := base.Args
+
+					genID, ok := args["gen_id"].(int)
+					if !ok {
+						genID = int(model.GetCurrentGen().ID)
+					}
+
+					db := service.GetService().DB.DB
+
+					var classes []model.Class
+
+					db.Where("base_id = ?", base.ID).Where("gen_id = ?", genID).Find(&classes)
+
+					targetRevenue := model.GetTargetClasses(&classes)
+
+					return targetRevenue, nil
 				},
 			},
 		},
