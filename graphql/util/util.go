@@ -5,10 +5,11 @@ import (
 	"log"
 )
 
-func ExecuteQuery(query string, schema graphql.Schema) *graphql.Result {
+func ExecuteQuery(query string, variable map[string]interface{}, schema graphql.Schema, ) *graphql.Result {
 	result := graphql.Do(graphql.Params{
-		Schema:        schema,
-		RequestString: query,
+		Schema:         schema,
+		RequestString:  query,
+		VariableValues: variable,
 	})
 
 	if len(result.Errors) > 0 {
@@ -16,4 +17,3 @@ func ExecuteQuery(query string, schema graphql.Schema) *graphql.Result {
 	}
 	return result
 }
-
