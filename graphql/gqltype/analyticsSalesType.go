@@ -116,6 +116,32 @@ var AnalyticSalesType = graphql.NewObject(
 					return total, nil
 				},
 			},
+			"total_registers": &graphql.Field{
+				Type: graphql.Int,
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+					args := p.Source.(map[string]interface{})
+
+					genID, ok := args["gen_id"].(int)
+					if !ok {
+						genID = int(model.GetCurrentGen().ID)
+					}
+
+					db := service.GetService().DB.DB
+
+					var gen model.Gen
+
+					var total int
+
+					db.Find(&gen, genID)
+
+					db.Debug().Model(&model.Register{}).
+						Where("? <= created_at AND created_at < ?", gen.StartTime, gen.EndTime.AddDate(0, 0, 1)).
+						Count(&total)
+
+					return total, nil
+				},
+			},
 			"registers_by_date": &graphql.Field{
 				Type: graphql.NewList(RegisterByDate),
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
@@ -140,7 +166,7 @@ var AnalyticSalesType = graphql.NewObject(
 
 					db.Find(&gen, genID)
 
-					db.Debug().Model(&model.Register{}).
+					db.Model(&model.Register{}).
 						Select("date(created_at) date_time, sum(1) as total").
 						Where("? <= created_at AND created_at < ?", gen.StartTime, gen.EndTime.AddDate(0, 0, 1)).
 						Scopes(model.RegisterNew).
@@ -211,6 +237,27 @@ var AnalyticSalesType = graphql.NewObject(
 					targetRevenue := model.GetTargetClasses(&gen.Classes)
 
 					return targetRevenue, nil
+				},
+			},
+			"total_classes": &graphql.Field{
+				Type: graphql.Int,
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+					args := p.Source.(map[string]interface{})
+
+					genID, ok := args["gen_id"].(int)
+					if !ok {
+						genID = int(model.GetCurrentGen().ID)
+					}
+
+					db := service.GetService().DB.DB
+
+					var gen model.Gen
+
+					db.Find(&gen, genID)
+
+					db.Model(&gen).Related(&gen.Classes)
+
+					return len(gen.Classes), nil
 				},
 			},
 		},
